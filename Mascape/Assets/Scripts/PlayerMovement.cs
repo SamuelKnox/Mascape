@@ -8,7 +8,6 @@ public class PlayerMovement : MonoBehaviour
     public float Speed = 5.0F;
 
     private CharacterController characterController;
-    private Vector3 moveDirection = Vector3.zero;
 
     void Start()
     {
