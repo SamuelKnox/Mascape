@@ -9,8 +9,10 @@ GameObject:
   m_Component:
   - 4: {fileID: 407654}
   - 212: {fileID: 21207654}
-  - 143: {fileID: 14307654}
-  - 114: {fileID: 11407654}
+  - 50: {fileID: 5049580}
+  - 61: {fileID: 6149580}
+  - 95: {fileID: 9549580}
+  - 114: {fileID: 11459950}
   - 114: {fileID: 11407652}
   m_Layer: 0
   m_Name: Builder
@@ -31,9 +33,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
+--- !u!50 &5049580
+Rigidbody2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 107654}
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: .0500000007
+  m_GravityScale: 1
+  m_FixedAngle: 0
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+--- !u!61 &6149580
+BoxCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 107654}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Size: {x: .5, y: .5}
+  m_Center: {x: 0, y: 0}
+--- !u!95 &9549580
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 107654}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 4c6feac96341baf47bab5ab6aa243a02, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
 --- !u!114 &11407652
 MonoBehaviour:
-  m_ObjectHideFlags: 1
+  m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 107654}
@@ -44,7 +87,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Camera: {fileID: 0}
   OffScreenOffset: {x: 0, y: 0}
---- !u!114 &11407654
+--- !u!114 &11459950
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -52,24 +95,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 107654}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3285c03ef976c646aa2c10dcd187724, type: 3}
+  m_Script: {fileID: 11500000, guid: d984e81308787c5438c40a7043f14071, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Speed: 6
---- !u!143 &14307654
-CharacterController:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 107654}
-  serializedVersion: 2
-  m_Height: .5
-  m_Radius: .25
-  m_SlopeLimit: 0
-  m_StepOffset: .300000012
-  m_SkinWidth: .0799999982
-  m_MinMoveDistance: 0
-  m_Center: {x: 0, y: 0, z: 0}
+  MovementSpeed: 5
+  Moveable: 1
+  BuildRange: .25
+  DestroyRange: .75
+  BuildSpeed: 1
+  DestroySpeed: 1
 --- !u!212 &21207654
 SpriteRenderer:
   m_ObjectHideFlags: 1

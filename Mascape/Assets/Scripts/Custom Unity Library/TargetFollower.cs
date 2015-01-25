@@ -23,6 +23,14 @@ public class TargetFollower : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Change the target which is to be followed.
+    /// </summary>
+    public void ChangeTarget(Transform target)
+    {
+        this.Target = target;
+    }
+
     private Vector3 oldTargetPosition;
     private Vector3 GetTargetMovement()
     {
