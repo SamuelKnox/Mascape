@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Vunerable))]
 [RequireComponent(typeof(PolygonCollider2D))]
 [RequireComponent(typeof(Animator))]
-public class Structure : Friendly {
+public class Structure : MonoBehaviour
+{
     public Builder Creator { get; set; }
-        
+
     private Animator animator;
 
     // Use this for initialization
@@ -22,15 +24,12 @@ public class Structure : Friendly {
         GetComponent<PolygonCollider2D>().enabled = true;
     }
 
-    public override void Die()
+    /// <summary>
+    /// Destroys the structure
+    /// </summary>
+    public void DestroyStructure()
     {
-        throw new System.NotImplementedException();
-    }
-
-    public void TearDown()
-    {
-        animator.speed *= -1;
         animator.SetTrigger("Destroy");
-        Destroy(gameObject, Creator.DestroySpeed);
+        Destroy(gameObject, 3.0f); //TODO softcode this to animation length
     }
 }

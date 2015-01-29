@@ -12,10 +12,13 @@ GameObject:
   - 50: {fileID: 5049580}
   - 61: {fileID: 6149580}
   - 95: {fileID: 9549580}
-  - 114: {fileID: 11459950}
-  - 114: {fileID: 11407652}
+  - 114: {fileID: 11421006}
+  - 114: {fileID: 11429576}
+  - 114: {fileID: 11406136}
+  - 114: {fileID: 11452270}
+  - 114: {fileID: 11474014}
   m_Layer: 0
-  m_Name: Builder
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74,20 +77,7 @@ Animator:
   m_ApplyRootMotion: 0
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
---- !u!114 &11407652
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 107654}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c9844f8da60625946b1fbe979239ebce, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Camera: {fileID: 0}
-  OffScreenOffset: {x: 0, y: 0}
---- !u!114 &11459950
+--- !u!114 &11406136
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -95,15 +85,64 @@ MonoBehaviour:
   m_GameObject: {fileID: 107654}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d984e81308787c5438c40a7043f14071, type: 3}
+  m_Script: {fileID: 11500000, guid: fbb4118d8adcf5b42beefef0fd981c7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MovementSpeed: 5
   Moveable: 1
-  BuildRange: .25
-  DestroyRange: .75
+--- !u!114 &11421006
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 107654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3285c03ef976c646aa2c10dcd187724, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11429576
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 107654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c505061185321e2478cf1b0c6c9ed00a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11452270
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 107654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4b54d6b4eb6de4439ccc0af35d6e8de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BuildRange: .5
+  DestroyRange: .5
   BuildSpeed: 1
   DestroySpeed: 1
+--- !u!114 &11474014
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 107654}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ca1d3af86daf49f448750d53f50420d8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FireRate: 1
+  BulletVelocity: 300
+  SpawnDistance: .5
+  DirectionOfAim: {x: 0, y: 0}
+  Bullet: {fileID: 11409314, guid: 8c9eff1fab99d9a4b83072ec223a0879, type: 2}
 --- !u!212 &21207654
 SpriteRenderer:
   m_ObjectHideFlags: 1

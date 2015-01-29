@@ -2,40 +2,67 @@
 using System.Collections;
 using System.Collections.Generic;
 
+[RequireComponent(typeof(Vunerable))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody2D))]
-public class Player : Friendly
+[RequireComponent(typeof(Builder))]
+[RequireComponent(typeof(Shooter))]
+[RequireComponent(typeof(Mobility))]
+public class Player : MonoBehaviour
 {
-    [Tooltip("Speed at which the player moves")]
-    public float MovementSpeed = 5.0F;
-    [Tooltip("Whether or not the player is able to move")]
-    public bool Moveable = true;
+    public FrameState CurrentFrameState { get; set; }
 
-    protected Animator Animator;
-        protected List<FrameState> FrameStates = new List<FrameState>();
-        protected FrameState CurrentFrameState = new FrameState();
+    protected List<FrameState> FrameStates = new List<FrameState>();
 
-        private bool isApplicationQuitting = false;
+    private Builder builder;
+    private Shooter shooter;
+    private bool isApplicationQuitting = false;
+    private Animator animator;
+    private Mobility mobility;
 
     void Start()
     {
-        Animator = GetComponent<Animator>();
+        animator = GetComponent<Animator>();
+        builder = GetComponent<Builder>();
+        shooter = GetComponent<Shooter>();
+        mobility = GetComponent<Mobility>();
     }
 
-    protected virtual void Update()
+    void FixedUpdate()
     {
-        Animator.SetFloat("Movement Speed", rigidbody2D.velocity.sqrMagnitude);
+        Vector3 movement = mobility.MovePlayer(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), mobility.MovementSpeed);
+        mobility.RotatePlayerInDirectionOfMovement(movement);
+    }
+
+    void Update()
+    {
+        CurrentFrameState = new FrameState();
+        animator.SetFloat("Movement Speed", rigidbody2D.velocity.sqrMagnitude);
+        if (Input.GetButton("Build Barricade") && !builder.IsBuilding)
+        {
+            builder.BuildStructure("Barricade");
+            CurrentFrameState.BuildBarricade = true;
+        }
+        if (Input.GetButton("Build Tower") && !builder.IsBuilding)
+        {
+            builder.BuildStructure("Tower");
+            CurrentFrameState.BuildTower = true;
+        }
+        if (Input.GetButton("Destroy") && !builder.IsBuilding)
+        {
+            builder.DestroyStructure();
+            CurrentFrameState.DestroyStructure = true;
+        }
+        if (Input.GetButton("Shoot") && !builder.IsBuilding)
+        {
+            shooter.FireWeapon();
+            CurrentFrameState.FireWeapon = true;
+        }
     }
 
     void LateUpdate()
     {
         UpdateCurrentFrameState();
-    }
-
-    void FixedUpdate()
-    {
-        Vector3 movement = MovePlayer(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"), MovementSpeed);
-        RotatePlayerInDirectionOfMovement(movement);
     }
 
     void OnDestroy()
@@ -59,36 +86,12 @@ public class Player : Friendly
 
     private void UpdateCurrentFrameState()
     {
-        currentFrameState.Position = transform.position;
-        currentFrameState.Rotation = transform.rotation.eulerAngles;
-        FrameStates.Add(currentFrameState);
-    }
-
-    private Vector3 MovePlayer(float horizontalAxis, float verticalAxis, float speed)
-    {
-        Vector3 movement = Vector3.zero;
-        if (Moveable)
+        if (CurrentFrameState == null)
         {
-            movement = new Vector3(horizontalAxis, verticalAxis, 0);
-            movement *= speed;
+            CurrentFrameState = new FrameState();
         }
-        rigidbody2D.velocity = movement;
-        return movement;
-    }
-
-    private void RotatePlayerInDirectionOfMovement(Vector3 movement)
-    {
-        if (movement != Vector3.zero && Moveable)
-        {
-            float angle = Mathf.Atan2(movement.y, movement.x) * Mathf.Rad2Deg - 90;
-            transform.eulerAngles = new Vector3(0, 0, angle);
-        }
-    }
-
-    public override void Die()
-    {
-        Moveable = false;
-        Animator.SetTrigger("Die");
-        Destroy(gameObject, 3); //TODO softcode this...not 3, animation length
+        CurrentFrameState.Position = transform.position;
+        CurrentFrameState.Rotation = transform.rotation.eulerAngles;
+        FrameStates.Add(CurrentFrameState);
     }
 }

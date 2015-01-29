@@ -1,51 +1,54 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(Mobility))]
 [RequireComponent(typeof(Animator))]
-public class Builder : Player
-{
-    [Tooltip("Distance multiplier for which the player will build and destroy")]
+public class Builder : MonoBehaviour {
+    [Tooltip("Multiplier for the distance at which the player will build")]
     public float BuildRange = 1.0f;
     [Tooltip("Distance at which the player can destroy")]
     public float DestroyRange = 2.0f;
-    [Tooltip("Speed at which the builder can build in seconds")]
+    [Tooltip("Speed at which the player can build in seconds")]
     public float BuildSpeed = 1.0f;
-    [Tooltip("Speed at which the builder can destroy in seconds")]
+    [Tooltip("Speed at which the player can destroy in seconds")]
     public float DestroySpeed = 1.0f;
+
+    public bool IsBuilding { get; set; }
 
     private float BuildTimeRemaining;
     private float DestroyTimeRemaining;
-    private bool IsBuilding = false;
+    private Mobility mobility;
+    private Animator animator;
 
-    // Update is called once per frame
-    protected override void Update()
+    void Start()
     {
-        base.Update();
-        if (Input.GetButton("Build") && !IsBuilding)
-        {
-            BuildStructure();
-            CurrentFrameState.BuildStructure = true;
-        }
-        if (Input.GetButton("Destroy") && !IsBuilding)
-        {
-            DestroyStructure();
-            CurrentFrameState.DestroyStructure = true;
-        }
+        mobility = GetComponent<Mobility>();
+        animator = GetComponent<Animator>();
+    }
+
+    void Update()
+    {
         UpdateBuildStatus();
     }
 
-    private void BuildStructure()
+    /// <summary>
+    /// Builds a structure
+    /// </summary>
+    public void BuildStructure(string structureType)
     {
         IsBuilding = true;
-        Moveable = false;
-        Animator.SetTrigger("Build");
-        GameObject barricadePrefab = Resources.Load("Barricade") as GameObject;
-        GameObject barricade = Instantiate(barricadePrefab, transform.position + transform.up * BuildRange, transform.rotation) as GameObject;
-        barricade.GetComponent<Structure>().Creator = this;
+        mobility.Moveable = false;
+        animator.SetTrigger("Build");
+        GameObject structurePrefab = Resources.Load(structureType) as GameObject;
+        GameObject structure = Instantiate(structurePrefab, transform.position + transform.up * BuildRange, transform.rotation) as GameObject;
+        structure.GetComponent<Structure>().Creator = this;
         BuildTimeRemaining = BuildSpeed;
     }
 
-    private void DestroyStructure()
+    /// <summary>
+    /// Destroys a structure
+    /// </summary>
+    public void DestroyStructure()
     {
         Structure[] structures = GameObject.FindObjectsOfType<Structure>();
         foreach (Structure structure in structures)
@@ -53,9 +56,9 @@ public class Builder : Player
             if (Vector3.Dot(Vector3.up, transform.InverseTransformPoint(structure.transform.position)) > 0 && Vector3.Distance(transform.position, structure.transform.position) < DestroyRange)
             {
                 IsBuilding = true;
-                Moveable = false;
-                Animator.SetTrigger("Destroy");
-                structure.TearDown();
+                mobility.Moveable = false;
+                animator.SetTrigger("Destroy");
+                structure.DestroyStructure();
                 DestroyTimeRemaining = DestroySpeed;
             }
         }
@@ -73,8 +76,8 @@ public class Builder : Player
             if (!IsBuilding)
             {
                 BuildTimeRemaining = 0;
-                Animator.SetTrigger("Stop Building");
-                Moveable = true;
+                animator.SetTrigger("Stop Building");
+                mobility.Moveable = true;
             }
         }
 
@@ -88,8 +91,8 @@ public class Builder : Player
             if (!IsBuilding)
             {
                 BuildTimeRemaining = 0;
-                Animator.SetTrigger("Stop Destroying");
-                Moveable = true;
+                animator.SetTrigger("Stop Destroying");
+                mobility.Moveable = true;
             }
         }
     }

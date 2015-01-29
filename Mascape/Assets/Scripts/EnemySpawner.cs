@@ -12,12 +12,21 @@ public class EnemySpawner : MonoBehaviour
 
     void Start()
     {
+        ResetSpawner();
+    }
+
+    /// <summary>
+    /// Resets spawn timer to beginning
+    /// </summary>
+    public void ResetSpawner()
+    {
+                CancelInvoke();
         InvokeRepeating("SpawnEnemy", SpawnDelay, SpawnRate);
     }
 
     private void SpawnEnemy()
     {
         Enemy enemy = Instantiate(enemyPrefab, transform.position, Quaternion.identity) as Enemy;
-        enemy.transform.parent = transform;
+        enemy.transform.parent = GameObject.Find("Enemies").transform;
     }
 }

@@ -24,12 +24,14 @@ public class ClickToMove : MonoBehaviour{
 	//Message from Agent
 	void OnDestinationReached(){
 
+        Debug.Log("TYO");
 		//do something here...
 	}
 
 	//Message from Agent
 	void OnDestinationInvalid(){
 
+        Debug.Log("INVALID");
 		//do something here...
 	}
 }

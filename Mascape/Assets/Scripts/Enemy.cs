@@ -1,16 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(PolyNavAgent))]
+[RequireComponent(typeof(Animator))]
+[RequireComponent(typeof(Mobility))]
+[RequireComponent(typeof(Vunerable))]
 public class Enemy : MonoBehaviour
 {
-    [Tooltip("Minimum change in destinations to warrant a pathfinding recalculation")]
-    public float PathfindingRefresh = 1.0F;
-    [Tooltip("Whether or not the enemy is able to move")]
-    public bool Moveable = true;
-    [Tooltip("Target that the enemy is chasing and will attack")]
-    public Friendly Target;
+    [Tooltip("Vunerable target which the enemy is focused on")]
+    public Vunerable Target;
+    [Tooltip("Range at which the enemy can attack")]
+    public float AttackRange = 1.0f;
+    [Tooltip("Number of seconds before enemy updates path")]
+    public float UpdatePathTime = 1.0f;
+    [Tooltip("Whether or not the enemy is stuck")]
+    public bool IsStuck = false;
 
     private PolyNavAgent agent;
     public PolyNavAgent Agent
@@ -23,47 +29,90 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    private Vector2 oldTargetPosition = new Vector2(Mathf.NegativeInfinity, Mathf.NegativeInfinity);
+    private Vector2 previousPosition;
 
-    protected virtual void Update()
+    void Start()
     {
-        if (Target == null || !Target.gameObject.activeSelf)
+        previousPosition = transform.position;
+        InvokeRepeating("UpdatePath", UpdatePathTime, UpdatePathTime);
+        InvokeRepeating("CheckIfStuck", 1.0f, 1.0f);
+    }
+
+    void Update()
+    {
+        if (Target == null || IsPathBlocked())
         {
             FindNewTarget();
         }
-        MoveZombie(Target.transform.position);
+        if (Target != null && Vector2.Distance(Target.transform.position, transform.position) <= AttackRange)
+        {
+            Target.Die();
+        }
     }
 
-    protected void FindNewTarget()
+    private void CheckIfStuck()
     {
-        Friendly closestTarget = GameObject.FindObjectOfType<Player>() as Friendly;
-        float closestDistance = Mathf.Infinity;
-        foreach (Transform ghost in GameObject.Find("Ghosts").transform)
-        {
-            if (ghost.gameObject.activeSelf && Vector3.Distance(transform.position, ghost.position) < closestDistance)
-            {
-                closestTarget = ghost.GetComponent<Friendly>();
-                closestDistance = Vector3.Distance(transform.position, ghost.transform.position);
-            }
-        }
-        Target = closestTarget;
+        float distanceTraveled = Vector2.Distance(previousPosition, transform.position);
+        previousPosition = transform.position;
+        IsStuck = distanceTraveled < 0.01f;
     }
 
-    private void MoveZombie(Vector2 target)
+    private void UpdatePath()
     {
-        if (Moveable)
+        if (Target != null && Agent.activePath.Count <= 1)
         {
-            rigidbody2D.fixedAngle = false;
-            if (Vector2.Distance(oldTargetPosition, target) > PathfindingRefresh)
+            Agent.SetDestination(Target.transform.position);
+        }
+    }
+
+    private void FindNewTarget()
+    {
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        if (player == null)
+        {
+            return;
+        }
+        Vunerable target = player.GetComponent<Vunerable>();
+        Agent.SetDestination(target.transform.position);
+        float targetDistance = Agent.remainingDistance;
+        foreach (GameObject ghostGameObject in GameObject.FindGameObjectsWithTag("Ghost"))
+        {
+            Vunerable ghost = ghostGameObject.GetComponent<Vunerable>();
+            Agent.SetDestination(ghost.transform.position);
+            float ghostDistance = Agent.remainingDistance;
+            if (ghostDistance < targetDistance)
             {
-                Agent.SetDestination(target);
-                oldTargetPosition = target;
+                target = ghost;
+                targetDistance = ghostDistance;
             }
         }
-        else if (!Moveable)
+        Agent.SetDestination(target.transform.position);
+        if (IsPathBlocked())
         {
-            rigidbody2D.velocity = Vector3.zero;
-            rigidbody2D.fixedAngle = true;
+            targetDistance = Mathf.Infinity;
+            foreach (GameObject structureGameObject in GameObject.FindGameObjectsWithTag("Structure"))
+            {
+                Vunerable structure = structureGameObject.GetComponent<Vunerable>();
+                Agent.SetDestination(structure.transform.position);
+                float structureDistance = Agent.remainingDistance;
+                if (structureDistance < targetDistance)
+                {
+                    target = structure;
+                    targetDistance = structureDistance;
+                }
+            }
+            PolyNavObstacle polyNavObstacle = target.gameObject.GetComponent<PolyNavObstacle>();
+            if (polyNavObstacle != null)
+            {
+                polyNavObstacle.enabled = false;
+            }
+            Agent.SetDestination(target.transform.position);
         }
+        Target = target;
+    }
+
+    private bool IsPathBlocked()
+    {
+        return IsStuck || !Agent.hasPath;
     }
 }

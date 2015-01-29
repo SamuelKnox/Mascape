@@ -15,7 +15,6 @@ public class GameManager : MonoBehaviour {
         }
     }
     private int currentFrame;
-
     public int CurrentFrame
     {
         get { return currentFrame; }

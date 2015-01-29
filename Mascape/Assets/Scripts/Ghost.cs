@@ -2,9 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class Ghost : Friendly
+[RequireComponent(typeof(Vunerable))]
+[RequireComponent(typeof(Builder))]
+[RequireComponent(typeof(Shooter))]
+public class Ghost : MonoBehaviour
 {
     public List<FrameState> FrameStates { get; set; }
+
+    private Builder builder;
+    private Shooter shooter;
+
+    void Start()
+    {
+        builder = GetComponent<Builder>();
+        shooter = GetComponent<Shooter>();
+    }
 
     void Update()
     {
@@ -13,29 +25,34 @@ public class Ghost : Friendly
             FrameState currentFrameState = FrameStates[GameManager.Instance.CurrentFrame];
             transform.position = currentFrameState.Position;
             transform.eulerAngles = currentFrameState.Rotation;
-            if (currentFrameState.BuildStructure)
+            if (currentFrameState.BuildBarricade)
             {
-                BuildStructure();
+                builder.BuildStructure("Barricade");
+            }
+            if (currentFrameState.BuildTower)
+            {
+                builder.BuildStructure("Tower");
             }
             if (currentFrameState.DestroyStructure)
             {
-                DestroyStructure();
+                builder.DestroyStructure();
             }
+            if (currentFrameState.FireWeapon)
+            {
+                shooter.FireWeapon();
+            }
+        }
+        else
+        {
+            FireWeaponRandomly();
         }
     }
 
-    private void BuildStructure()
+    void FireWeaponRandomly()
     {
-
-    }
-
-    private void DestroyStructure()
-    {
-
-    }
-
-    public override void Die()
-    {
-        gameObject.SetActive(false);
+        if (shooter.FireWeapon())
+        {
+            transform.RotateOverTime(new Vector3(0, 0, Random.Range(-360, 360)), shooter.FireRate);
+        }
     }
 }

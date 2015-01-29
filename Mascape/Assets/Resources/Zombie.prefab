@@ -9,10 +9,14 @@ GameObject:
   m_Component:
   - 4: {fileID: 418076}
   - 212: {fileID: 21218076}
+  - 114: {fileID: 11418162}
   - 114: {fileID: 11412278}
-  - 114: {fileID: 11473384}
   - 95: {fileID: 9514586}
   - 50: {fileID: 5088654}
+  - 114: {fileID: 11418164}
+  - 114: {fileID: 11480376}
+  - 60: {fileID: 6014750}
+  - 114: {fileID: 11448446}
   m_Layer: 0
   m_Name: Zombie
   m_TagString: Untagged
@@ -47,6 +51,29 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
+--- !u!60 &6014750
+PolygonCollider2D:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 118076}
+  m_Enabled: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Poly:
+    m_Paths:
+    - - {x: .166067123, y: -.0672236085}
+      - {x: .231846809, y: -.0155913234}
+      - {x: .239115715, y: .234520644}
+      - {x: .137613297, y: .225745142}
+      - {x: .141302109, y: .055147469}
+      - {x: .0509090424, y: .14935416}
+      - {x: -.0582733154, y: .139307261}
+      - {x: -.110004425, y: .0471613407}
+      - {x: -.114757538, y: .219068915}
+      - {x: -.192388535, y: .220505178}
+      - {x: -.226802826, y: -.0553153753}
+      - {x: -.188266754, y: -.0906952024}
 --- !u!95 &9514586
 Animator:
   serializedVersion: 3
@@ -75,16 +102,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxSpeed: 1
   mass: 20
-  stoppingDistance: .100000001
+  stoppingDistance: 0
   slowingDistance: 1
   decelerationRate: 2
   closerPointOnInvalid: 0
-  rotateTransform: 0
+  rotateTransform: 1
   rotateSpeed: 350
   sendMessages: 1
   debugPath: 1
-  avoidRadius: 0
---- !u!114 &11473384
+  avoidRadius: .349999994
+--- !u!114 &11418162
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -92,13 +119,48 @@ MonoBehaviour:
   m_GameObject: {fileID: 118076}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b53d720ed7a6a8440b881d74c4955d41, type: 3}
+  m_Script: {fileID: 11500000, guid: d83a69048c5f4624a8be01a011a82507, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PathfindingRefresh: 0
-  Moveable: 1
+  Target: {fileID: 0}
   AttackRange: 1
-  AttackSpeed: 1
+--- !u!114 &11418164
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 118076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbb4118d8adcf5b42beefef0fd981c7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MovementSpeed: 5
+  Moveable: 1
+--- !u!114 &11448446
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 118076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c505061185321e2478cf1b0c6c9ed00a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &11480376
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 118076}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fbb4118d8adcf5b42beefef0fd981c7a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MovementSpeed: 5
+  Moveable: 1
 --- !u!212 &21218076
 SpriteRenderer:
   m_ObjectHideFlags: 1

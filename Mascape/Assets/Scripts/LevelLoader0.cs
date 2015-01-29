@@ -3,12 +3,11 @@ using System.Collections;
 
 public class LevelLoader0 : MonoBehaviour
 {
-
-    // Use this for initialization
+        // Use this for initialization
     void Start()
     {
-        ResetLevel();
         GameManager.Instance.ResetCurrentFrame();
+        ResetLevel();
         LoadPlayer();
         LoadGhosts();
         Destroy(this);
@@ -24,11 +23,15 @@ public class LevelLoader0 : MonoBehaviour
         {
             Destroy(structure.gameObject);
         }
+        foreach(Transform enemySpawner in GameObject.Find("Enemy Spawners").transform){
+            enemySpawner.GetComponent<EnemySpawner>().ResetSpawner();
+        }
     }
 
     private void LoadPlayer()
     {
-        Instantiate(Resources.Load("Builder"));
+        GameObject player = Instantiate(Resources.Load("Player"), new Vector3(0, 0.01f, 0), Quaternion.identity) as GameObject;
+        Camera.main.GetComponent<TargetFollower>().Target = player.transform;
     }
 
     private void LoadGhosts()
