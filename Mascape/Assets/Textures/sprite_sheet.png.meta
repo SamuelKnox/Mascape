@@ -20,6 +20,7 @@ TextureImporter:
     21300030: sprite_sheet_15
     21300032: sprite_sheet_16
     21300034: sprite_sheet_17
+    21300036: sprite_sheet_18
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -238,6 +239,16 @@ TextureImporter:
         y: 942
         width: 50
         height: 25
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+    - name: sprite_sheet_18
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 926
+        width: 55
+        height: 43
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

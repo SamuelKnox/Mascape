@@ -9,7 +9,6 @@ GameObject:
   m_Component:
   - 4: {fileID: 456596}
   - 212: {fileID: 21256596}
-  - 114: {fileID: 11456596}
   - 60: {fileID: 6056596}
   - 95: {fileID: 9532828}
   - 114: {fileID: 11418250}
@@ -29,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 156596}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -90,20 +89,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c505061185321e2478cf1b0c6c9ed00a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11456596
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 156596}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc4f7f33d8fc7c0419b2308165807ce0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  invertPolygon: 1
-  shapeType: 0
-  extraOffset: 0
+  CurrentHP: 2
+  MaxHP: 2
 --- !u!212 &21256596
 SpriteRenderer:
   m_ObjectHideFlags: 1

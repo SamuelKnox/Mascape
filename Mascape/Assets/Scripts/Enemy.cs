@@ -6,17 +6,19 @@ using System.Collections.Generic;
 [RequireComponent(typeof(PolyNavAgent))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Mobility))]
-[RequireComponent(typeof(Vunerable))]
+[RequireComponent(typeof(Health))]
 public class Enemy : MonoBehaviour
 {
     [Tooltip("Vunerable target which the enemy is focused on")]
-    public Vunerable Target;
+    public Health Target;
     [Tooltip("Range at which the enemy can attack")]
     public float AttackRange = 1.0f;
     [Tooltip("Number of seconds before enemy updates path")]
     public float UpdatePathTime = 1.0f;
     [Tooltip("Whether or not the enemy is stuck")]
     public bool IsStuck = false;
+    [Tooltip("The amount of damage this enemy deals")]
+    public float Damage = 1.0f;
 
     private PolyNavAgent agent;
     public PolyNavAgent Agent
@@ -40,13 +42,13 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
-        if (Target == null || IsPathBlocked())
+        if (Target == null || IsPathBlocked() || !Target.IsAlive)
         {
             FindNewTarget();
         }
         if (Target != null && Vector2.Distance(Target.transform.position, transform.position) <= AttackRange)
         {
-            Target.Die();
+            Target.DealDamage(Damage);
         }
     }
 
@@ -72,12 +74,16 @@ public class Enemy : MonoBehaviour
         {
             return;
         }
-        Vunerable target = player.GetComponent<Vunerable>();
+        Health target = player.GetComponent<Health>();
         Agent.SetDestination(target.transform.position);
         float targetDistance = Agent.remainingDistance;
         foreach (GameObject ghostGameObject in GameObject.FindGameObjectsWithTag("Ghost"))
         {
-            Vunerable ghost = ghostGameObject.GetComponent<Vunerable>();
+            Health ghost = ghostGameObject.GetComponent<Health>();
+            if (!ghost.IsAlive)
+            {
+                continue;
+            }
             Agent.SetDestination(ghost.transform.position);
             float ghostDistance = Agent.remainingDistance;
             if (ghostDistance < targetDistance)
@@ -92,7 +98,11 @@ public class Enemy : MonoBehaviour
             targetDistance = Mathf.Infinity;
             foreach (GameObject structureGameObject in GameObject.FindGameObjectsWithTag("Structure"))
             {
-                Vunerable structure = structureGameObject.GetComponent<Vunerable>();
+                Health structure = structureGameObject.GetComponent<Health>();
+                if (!structure.IsAlive)
+                {
+                    continue;
+                }
                 Agent.SetDestination(structure.transform.position);
                 float structureDistance = Agent.remainingDistance;
                 if (structureDistance < targetDistance)

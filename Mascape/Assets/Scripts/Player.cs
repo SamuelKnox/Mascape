@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(Vunerable))]
+[RequireComponent(typeof(Health))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Builder))]
@@ -43,10 +43,10 @@ public class Player : MonoBehaviour
             builder.BuildStructure("Barricade");
             CurrentFrameState.BuildBarricade = true;
         }
-        if (Input.GetButton("Build Tower") && !builder.IsBuilding)
+        if (Input.GetButton("Build Turret") && !builder.IsBuilding)
         {
-            builder.BuildStructure("Tower");
-            CurrentFrameState.BuildTower = true;
+            builder.BuildStructure("Turret");
+            CurrentFrameState.BuildTurret = true;
         }
         if (Input.GetButton("Destroy") && !builder.IsBuilding)
         {
@@ -69,6 +69,7 @@ public class Player : MonoBehaviour
     {
         if (!isApplicationQuitting)
         {
+            GameManager.Instance.ResetCurrentFrame();
             GameObject ghosts = GameObject.Find("Ghosts");
             GameObject ghost = Instantiate(Resources.Load("Ghost")) as GameObject;
             ghost.transform.parent = ghosts.transform;

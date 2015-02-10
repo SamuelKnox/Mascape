@@ -14,7 +14,6 @@ GameObject:
   - 95: {fileID: 9514586}
   - 50: {fileID: 5088654}
   - 114: {fileID: 11418164}
-  - 114: {fileID: 11480376}
   - 60: {fileID: 6014750}
   - 114: {fileID: 11448446}
   m_Layer: 0
@@ -123,7 +122,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Target: {fileID: 0}
-  AttackRange: 1
+  AttackRange: .75
+  UpdatePathTime: 1
+  IsStuck: 0
+  Damage: 1
 --- !u!114 &11418164
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -135,7 +137,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbb4118d8adcf5b42beefef0fd981c7a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MovementSpeed: 5
+  MovementSpeed: 2.5
   Moveable: 1
 --- !u!114 &11448446
 MonoBehaviour:
@@ -148,19 +150,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c505061185321e2478cf1b0c6c9ed00a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &11480376
-MonoBehaviour:
-  m_ObjectHideFlags: 1
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 118076}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fbb4118d8adcf5b42beefef0fd981c7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MovementSpeed: 5
-  Moveable: 1
+  CurrentHP: 2
+  MaxHP: 2
 --- !u!212 &21218076
 SpriteRenderer:
   m_ObjectHideFlags: 1

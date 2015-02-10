@@ -35,7 +35,7 @@ public class PolyNavAgent : MonoBehaviour{
 	private float maxForce            = 100;
 	private int requests              = 0;
 	private List<Vector2> _activePath = new List<Vector2>();
-	private Vector2 _primeGoal        = Vector2.zero;
+	private Vector2 _primeGoal        = new Vector2(Mathf.Infinity, Mathf.Infinity);
 	private GameObject _messageReceiver;
 	private Transform _transform;
 	private Action<bool> reachedCallback;

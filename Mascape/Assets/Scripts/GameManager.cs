@@ -30,6 +30,9 @@ public class GameManager : MonoBehaviour {
         currentFrame++;
     }
 
+    /// <summary>
+    /// Sets the Current Frame to 0.
+    /// </summary>
     public void ResetCurrentFrame()
     {
         currentFrame = 0;

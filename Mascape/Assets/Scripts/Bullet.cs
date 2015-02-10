@@ -17,7 +17,7 @@ public class Bullet : MonoBehaviour
         if (enemy != null)
         {
             Destroy(gameObject);
-            enemy.GetComponent<Vunerable>().Die();
+            enemy.GetComponent<Health>().Die();
             return;
         }
         Structure structure = collider.GetComponent<Structure>();

@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 
-[RequireComponent(typeof(Vunerable))]
+[RequireComponent(typeof(Health))]
 [RequireComponent(typeof(Builder))]
 [RequireComponent(typeof(Shooter))]
 public class Ghost : MonoBehaviour
@@ -29,9 +29,9 @@ public class Ghost : MonoBehaviour
             {
                 builder.BuildStructure("Barricade");
             }
-            if (currentFrameState.BuildTower)
+            if (currentFrameState.BuildTurret)
             {
-                builder.BuildStructure("Tower");
+                builder.BuildStructure("Turret");
             }
             if (currentFrameState.DestroyStructure)
             {
@@ -44,11 +44,11 @@ public class Ghost : MonoBehaviour
         }
         else
         {
-            FireWeaponRandomly();
+            ShootRandomly();
         }
     }
 
-    void FireWeaponRandomly()
+    private void ShootRandomly()
     {
         if (shooter.FireWeapon())
         {

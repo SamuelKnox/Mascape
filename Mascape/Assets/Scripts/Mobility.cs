@@ -8,6 +8,15 @@ public class Mobility : MonoBehaviour
     [Tooltip("Whether or not the player is able to move")]
     public bool Moveable = true;
 
+    void Start()
+    {
+        PolyNavAgent polyNavAgent = GetComponent<PolyNavAgent>();
+        if (polyNavAgent != null)
+        {
+            polyNavAgent.maxSpeed = MovementSpeed;
+        }
+    }
+
     /// <summary>
     /// Moves gameObject based on the parameters of horizontal axis, vertical axis, and speed
     /// </summary>

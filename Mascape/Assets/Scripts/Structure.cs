@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(Vunerable))]
+[RequireComponent(typeof(Health))]
 [RequireComponent(typeof(PolygonCollider2D))]
 [RequireComponent(typeof(Animator))]
 public class Structure : MonoBehaviour

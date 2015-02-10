@@ -36,10 +36,18 @@ public class Builder : MonoBehaviour {
     /// </summary>
     public void BuildStructure(string structureType)
     {
+        GameObject structurePrefab = Resources.Load(structureType) as GameObject;
+        Bounds buildBounds = new Bounds(transform.position + transform.up * BuildRange, structurePrefab.renderer.bounds.size);
+        foreach (GameObject structureGameObject in GameObject.FindGameObjectsWithTag("Structure"))
+        {
+            if (structureGameObject.renderer.bounds.Intersects(buildBounds))
+            {
+                return;
+            }
+        }
         IsBuilding = true;
         mobility.Moveable = false;
         animator.SetTrigger("Build");
-        GameObject structurePrefab = Resources.Load(structureType) as GameObject;
         GameObject structure = Instantiate(structurePrefab, transform.position + transform.up * BuildRange, transform.rotation) as GameObject;
         structure.GetComponent<Structure>().Creator = this;
         BuildTimeRemaining = BuildSpeed;
@@ -50,15 +58,15 @@ public class Builder : MonoBehaviour {
     /// </summary>
     public void DestroyStructure()
     {
-        Structure[] structures = GameObject.FindObjectsOfType<Structure>();
-        foreach (Structure structure in structures)
+        GameObject[] structures = GameObject.FindGameObjectsWithTag("Structure");
+        foreach (GameObject structure in structures)
         {
             if (Vector3.Dot(Vector3.up, transform.InverseTransformPoint(structure.transform.position)) > 0 && Vector3.Distance(transform.position, structure.transform.position) < DestroyRange)
             {
                 IsBuilding = true;
                 mobility.Moveable = false;
                 animator.SetTrigger("Destroy");
-                structure.DestroyStructure();
+                structure.GetComponent<Structure>().DestroyStructure();
                 DestroyTimeRemaining = DestroySpeed;
             }
         }
